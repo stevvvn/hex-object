@@ -1,0 +1,14 @@
+{
+  "name": "hex-object",
+  "version": "1.0.0",
+  "description": "Utilities for dealing with 'deep.key.shortcuts' in and merging of objects, chiefly useful for configuration structures",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Steven Snyder <snyder13@purdue.edu>",
+  "license": "MIT"
+}
