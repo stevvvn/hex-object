@@ -7,8 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "jest"
   },
   "author": "Steven Snyder <snyder13@purdue.edu>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^22.0.4"
+  }
 }
