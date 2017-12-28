@@ -156,7 +156,7 @@ function concat(obj /*: map */, path /*: string */, val /*: ?any */) /*: void */
  */
 function normalize(obj /*: map */) /*: void */ {
 	for (let k in obj) {
-		if (obj[k].constructor === Object) {
+		if (obj[k] && obj[k].constructor === Object) {
 			normalize(obj[k]);
 		}
 		set(obj, k, obj[k]);
