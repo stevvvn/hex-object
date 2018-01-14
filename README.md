@@ -19,7 +19,7 @@ This module implements utilities to support a short alternate syntax for deep st
             'id': 'foo',
             'key': 'bar'
         },
-        'redis.store': 'redis'
+        'local.store': 'redis'
     }
 }
 ```
@@ -30,7 +30,8 @@ can be used in place of the "normalized" JSON equivalent:
          "twilio": { "api": {
             "id": "foo",
             "key": "bar"
-         } } 
+         } },
+			"local": { "store": "redis" }
      } }
 }
 ```
