@@ -166,6 +166,10 @@ function normalize(obj /*: map */) /*: void */ {
 	}
 }
 
+function empty() {
+	return wrap({});
+}
+
 let iface;
 /**
  * Wrap an object for chaining of the other methods in this module. Call `get`
@@ -177,6 +181,9 @@ let iface;
 function wrap(obj /*: map */) /*: map */ {
 	const rv = {};
 	for (let fun in iface) {
+		if (fun === 'empty') {
+			continue;
+		}
 		rv[fun] = (...args /*: [ any ] */) /*: any */ => {
 			/// $FlowFixMe can't type-check generic wrappers liek this, need to write 'em for each method
 			const res = iface[fun].apply(null, [ obj ].concat(args));
@@ -187,5 +194,5 @@ function wrap(obj /*: map */) /*: map */ {
 }
 
 iface = module.exports = {
-	augment, get, set, push, concat, wrap, normalize
+	augment, get, set, push, concat, wrap, normalize, empty
 };
