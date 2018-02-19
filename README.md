@@ -6,32 +6,33 @@ This is a small collection of utilities for dealing with object manipulation, ai
 This module implements utilities to support a short alternate syntax for deep structures:
 ```javascript
 {
-    'login.strategies.twilio.api': {
-        'id': 'foo',
-        'key': 'bar'
-    },
-    'login.strategies.local.store': 'redis'
+	'login.strategies.twilio.api': {
+		'id': 'foo',
+		'key': 'bar'
+	},
+	'login.strategies.local.store': 'redis'
 }
 // - or -
 {
-    'login.strategies': {
-        'twilio.api': {
-            'id': 'foo',
-            'key': 'bar'
-        },
-        'redis.store': 'redis'
-    }
+	'login.strategies': {
+		'twilio.api': {
+			'id': 'foo',
+			'key': 'bar'
+		},
+		'local.store': 'redis'
+	}
 }
 ```
 can be used in place of the "normalized" JSON equivalent:
 ```json
 {
-    "login": { "strategies": {
-         "twilio": { "api": {
-            "id": "foo",
-            "key": "bar"
-         } } 
-     } }
+"login": { "strategies": {
+		"twilio": { "api": {
+			"id": "foo",
+			"key": "bar"
+		} },
+		"local": { "store": "redis" }
+	} }
 }
 ```
 

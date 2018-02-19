@@ -72,6 +72,11 @@ function get(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
 	return val;
 }
 
+function getOrCall(obj, path, cb) {
+	const val = get(obj, path, null);
+	return Promise.resolve(val === null ? cb() : val);
+}
+
 /**
  * Set a given (possibly deep) key in an object
  *
@@ -156,7 +161,7 @@ function concat(obj /*: map */, path /*: string */, val /*: ?any */) /*: void */
  */
 function normalize(obj /*: map */) /*: void */ {
 	for (let k in obj) {
-		if (obj[k].constructor === Object) {
+		if (obj[k] && obj[k].constructor === Object) {
 			normalize(obj[k]);
 		}
 		set(obj, k, obj[k]);
@@ -185,14 +190,14 @@ function wrap(obj /*: map */) /*: map */ {
 			continue;
 		}
 		rv[fun] = (...args /*: [ any ] */) /*: any */ => {
-			/// $FlowFixMe can't type-check generic wrappers liek this, need to write 'em for each method
+			/// $FlowFixMe can't type-check generic wrappers like this, need to write 'em for each method
 			const res = iface[fun].apply(null, [ obj ].concat(args));
-			return fun === 'get' ? res : rv;
+			return /^get/.test(fun) ? res : rv;
 		}
 	}
 	return rv;
 }
 
 iface = module.exports = {
-	augment, get, set, push, concat, wrap, normalize, empty
+	augment, get, getOrCall, set, push, concat, wrap, normalize, empty
 };
