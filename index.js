@@ -91,7 +91,7 @@ function set(obj /*: map */, path /*: string */, val /*: ?any */, setter /*: ?(a
 	if (!setter) {
 		setter = (targ, key) => { targ[key] = val; };
 	}
-	const keys = path.split('.');
+	const keys = path.indexOf('"') > -1 ? [ path.replace(/"/g, '') ] : path.split('.');
 	let targ = obj;
 	keys.forEach((key, idx) => {
 		if (idx === keys.length - 1) {
@@ -165,7 +165,7 @@ function normalize(obj /*: map */) /*: void */ {
 			normalize(obj[k]);
 		}
 		set(obj, k, obj[k]);
-		if (k.indexOf('.') > -1) {
+		if (k.indexOf('.') > -1 && k.indexOf('"') === -1) {
 			delete obj[k];
 		}
 	}
