@@ -55,10 +55,8 @@ function get(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
 	if (!path) {
 		return obj;
 	}
-	const keys = path.split('.');
 	let val = obj;
-
-	keys.every((key) => {
+	path.split('.').every((key) => {
 		if (!val || val[key] === undefined) {
 			val = def;
 			return false;
@@ -72,7 +70,21 @@ function get(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
 	return val;
 }
 
-function getOrCall(obj, path, cb) {
+function has(obj /*: map */, path /*: string */) /*: boolean */ {
+	if (!path) {
+		return false;
+	}
+	let val = obj;
+	return path.split('.').every((key) => {
+		if (!val || val[key] === undefined) {
+			return false;
+		}
+		val = val[key];
+		return true;
+	});
+}
+
+function getOrCall(obj /*: map */, path /*: string */, cb /*: () => void */) /*: Promise<any> */ {
 	const val = get(obj, path, null);
 	return Promise.resolve(val === null ? cb() : val);
 }
@@ -192,12 +204,12 @@ function wrap(obj /*: map */) /*: map */ {
 		rv[fun] = (...args /*: [ any ] */) /*: any */ => {
 			/// $FlowFixMe can't type-check generic wrappers like this, need to write 'em for each method
 			const res = iface[fun].apply(null, [ obj ].concat(args));
-			return /^get/.test(fun) ? res : rv;
+			return /^(?:get|has)/.test(fun) ? res : rv;
 		}
 	}
 	return rv;
 }
 
 iface = module.exports = {
-	augment, get, getOrCall, set, push, concat, wrap, normalize, empty
+	augment, get, getOrCall, set, push, concat, wrap, normalize, empty, has
 };

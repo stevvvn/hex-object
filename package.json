@@ -4,8 +4,8 @@
   "description": "Utilities for dealing with 'deep.key.shortcuts' in, and merging of, objects. Chiefly useful for configuration structures",
   "main": "index.js",
   "repository": {
-	  "type": "git",
-	  "url": "https://bitbucket.org/snyder13/hex-object"
+    "type": "git",
+    "url": "https://bitbucket.org/snyder13/hex-object"
   },
   "directories": {
     "test": "test"
