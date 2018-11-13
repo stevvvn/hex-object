@@ -37,6 +37,12 @@ function augment2(a /*: map|Array<any> */, b /*: map|Array<any> */) /*: map|Arra
 	return a;
 }
 
+function getEnv(obj /*: map */, env /*: string */, path /*: ?string */, def /*: ?any */) /*: any */ {
+	return getOrCall(obj, `${ env }.${ path }`, () =>
+		get(obj, path, def)
+	);
+}
+
 /**
  * Get a given (possibly deep) key from the object.
  *
@@ -84,9 +90,9 @@ function has(obj /*: map */, path /*: string */) /*: boolean */ {
 	});
 }
 
-function getOrCall(obj /*: map */, path /*: string */, cb /*: () => void */) /*: Promise<any> */ {
+function getOrCall(obj /*: map */, path /*: string */, cb /*: () => any */) /*: any */ {
 	const val = get(obj, path, null);
-	return Promise.resolve(val === null ? cb() : val);
+	return val === null ? cb() : val;
 }
 
 /**
