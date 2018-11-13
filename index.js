@@ -226,5 +226,5 @@ function wrap(obj /*: map */) /*: map */ {
 }
 
 iface = module.exports = {
-	augment, get, getOrCall, set, push, concat, wrap, normalize, empty, has
+	augment, get, getEnv, getOrCall, set, push, concat, wrap, normalize, empty, has
 };
