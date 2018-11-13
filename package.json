@@ -1,6 +1,6 @@
 {
   "name": "hex-object",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Utilities for dealing with 'deep.key.shortcuts' in, and merging of, objects. Chiefly useful for configuration structures",
   "main": "index.js",
   "repository": {
