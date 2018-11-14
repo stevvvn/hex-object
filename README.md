@@ -45,14 +45,39 @@ obj.get(conf, 'login.strategies.local');
 // { 'store': 'redis' }
 ```
 
-### Wrapping
+## Environment-specific overrides
+The root paths `dev`, `test` and `prod` are considered special namespaces that refer specifically to that environment (as determined by `process.env.NODE_ENV`).
+
+`test.js`:
+```javascript
+console.log(require('hex-object').wrap({
+	't': 'base',
+	'dev': { 't': 'dev' },
+	'test': { 't': 'test' },
+	'prod': { 't': 'prod' }
+}).get('t'));
+```
+
+```sh
+$ NODE_ENV=testing node test
+test
+$ NODE_ENV=PROD node test
+prod
+$ node test
+dev
+```
+
+The interpretation of the environment variable is relatively loose, and development is assumed as the default.
+
+
+## Wrapping
 If you want to do more than one operation on an object, it can be helpful to wrap it:
 ```javascript
 const obj = require('hex-object'), conf = obj.wrap(require('./login-conf'));
 conf
     .normalize()
     .set('login.strategies.local.store', 'postgres');
-    
+
 conf.get('login.strategies.local');
 // { 'store': 'postgres' });
 ```
