@@ -39,16 +39,15 @@ function augment2(a /*: map|Array<any> */, b /*: map|Array<any> */) /*: map|Arra
 
 const undefOk = Symbol();
 function get(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
+	const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
 	let env = 'dev';
-	if (process.env.NODE_ENV) {
-		if ((/^prod/i).test(process.env.NODE_ENV)) {
-			env = 'prod';
-		}
-		else if ((/^test/i).test(process.env.NODE_ENV)) {
-			env = 'test';
-		}
+	if ((/^prod/i).test(nodeEnv)) {
+		env = 'prod';
 	}
-	const val = getRaw(obj, `${ env }.${ path }`, undefOk);
+	else if ((/^test/i).test(nodeEnv)) {
+		env = 'test';
+	}
+	const val = getRaw(obj, path ? `${ env }.${ path }` : env, undefOk);
 	if (val !== undefOk) {
 		return val;
 	}
