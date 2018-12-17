@@ -107,3 +107,28 @@ describe('`wrap`', () => {
 			});
 	});
 });
+
+describe('env interactions', () => {
+	const doc = lib.wrap({
+		't': 'base',
+		'dev': { 't': 'dev' },
+		'prod': { 't': 'prod' },
+		'test': { 't': 'test' }
+	});
+	const restoreEnv = process.env.NODE_ENV;
+	it('overrides key when set in different envs', () => {
+		[
+			[ 'dev', 'devel', 'development' ],
+			[ 'test', 'testing' ],
+			[ 'prod', 'production' ]
+		].forEach((variants) => {
+			variants.forEach((env) => {
+				process.env.NODE_ENV = env;
+				expect(doc.get('t')).toEqual(variants[0]);
+				process.env.NODE_ENV = env.toUpperCase();
+				expect(doc.get('t')).toEqual(variants[0]);
+			});
+		});
+	});
+	process.env.NODE_ENV = restoreEnv;
+});

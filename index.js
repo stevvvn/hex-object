@@ -37,17 +37,21 @@ function augment2(a /*: map|Array<any> */, b /*: map|Array<any> */) /*: map|Arra
 	return a;
 }
 
-function getEnv(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
+const undefOk = Symbol();
+function get(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
+	const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'dev';
 	let env = 'dev';
-	if (process.env.NODE_ENV && (/^prod/i).test(process.env.NODE_ENV)) {
+	if ((/^prod/i).test(nodeEnv)) {
 		env = 'prod';
 	}
-	else if (process.env.NODE_ENV && (/^test/i).test(process.env.NODE_ENV)) {
+	else if ((/^test/i).test(nodeEnv)) {
 		env = 'test';
 	}
-	return getOrCall(obj, path ? `${ env }.${ path }` : env, () =>
-		get(obj, path, def)
-	);
+	const val = getRaw(obj, path ? `${ env }.${ path }` : env, undefOk);
+	if (val !== undefOk) {
+		return val;
+	}
+	return getRaw(obj, path, def);
 }
 
 /**
@@ -64,7 +68,7 @@ function getEnv(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */
  * and no default is provided, it is considered an error. Supply `null` for
  * the default to prevent raising this error.
  */
-function get(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
+function getRaw(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
 	if (!path) {
 		return obj;
 	}
@@ -224,5 +228,5 @@ function wrap(obj /*: map */) /*: map */ {
 }
 
 iface = module.exports = {
-	augment, get, getEnv, getOrCall, set, push, concat, wrap, normalize, empty, has
+	augment, get, getOrCall, set, push, concat, wrap, normalize, empty, has
 };
