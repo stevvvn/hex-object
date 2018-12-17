@@ -39,15 +39,13 @@ function augment2(a /*: map|Array<any> */, b /*: map|Array<any> */) /*: map|Arra
 
 function getEnv(obj /*: map */, path /*: ?string */, def /*: ?any */) /*: any */ {
 	let env = 'dev';
-	if (process.env.NODE_ENV) {
-		if ((/^prod/i).test(process.env.NODE_ENV)) {
-			env = 'prod';
-		}
-		else if ((/^test/i).test(process.env.NODE_ENV)) {
-			env = 'test';
-		}
+	if (process.env.NODE_ENV && (/^prod/i).test(process.env.NODE_ENV)) {
+		env = 'prod';
 	}
-	return getOrCall(obj, `${ env }.${ path }`, () =>
+	else if (process.env.NODE_ENV && (/^test/i).test(process.env.NODE_ENV)) {
+		env = 'test';
+	}
+	return getOrCall(obj, path ? `${ env }.${ path }` : env, () =>
 		get(obj, path, def)
 	);
 }
